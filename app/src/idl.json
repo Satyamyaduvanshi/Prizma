@@ -1,0 +1,578 @@
+{
+  "address": "GC15UJT8ESPd93LVfGn7tHXNSWFG9wqX78Ty4GNapfSk",
+  "metadata": {
+    "name": "crypto_prediction_market",
+    "version": "0.1.0",
+    "spec": "0.1.0",
+    "description": "Created with Anchor"
+  },
+  "instructions": [
+    {
+      "name": "buy_shares",
+      "docs": [
+        "3. Users buy outcome shares using the constant-product AMM"
+      ],
+      "discriminator": [
+        40,
+        239,
+        138,
+        154,
+        8,
+        37,
+        106,
+        108
+      ],
+      "accounts": [
+        {
+          "name": "market",
+          "writable": true
+        },
+        {
+          "name": "position",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  112,
+                  111,
+                  115,
+                  105,
+                  116,
+                  105,
+                  111,
+                  110
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "market"
+              },
+              {
+                "kind": "account",
+                "path": "user"
+              }
+            ]
+          }
+        },
+        {
+          "name": "vault",
+          "writable": true
+        },
+        {
+          "name": "user_usdc",
+          "writable": true
+        },
+        {
+          "name": "user",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "system_program",
+          "address": "11111111111111111111111111111111"
+        },
+        {
+          "name": "token_program"
+        }
+      ],
+      "args": [
+        {
+          "name": "side",
+          "type": {
+            "defined": {
+              "name": "Side"
+            }
+          }
+        },
+        {
+          "name": "usdc_in",
+          "type": "u64"
+        }
+      ]
+    },
+    {
+      "name": "claim_winnings",
+      "docs": [
+        "5. Winners claim their USDC payouts"
+      ],
+      "discriminator": [
+        161,
+        215,
+        24,
+        59,
+        14,
+        236,
+        242,
+        221
+      ],
+      "accounts": [
+        {
+          "name": "market"
+        },
+        {
+          "name": "position",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  112,
+                  111,
+                  115,
+                  105,
+                  116,
+                  105,
+                  111,
+                  110
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "market"
+              },
+              {
+                "kind": "account",
+                "path": "user"
+              }
+            ]
+          }
+        },
+        {
+          "name": "vault",
+          "writable": true
+        },
+        {
+          "name": "user_usdc",
+          "writable": true
+        },
+        {
+          "name": "user",
+          "signer": true
+        },
+        {
+          "name": "token_program"
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "create_market",
+      "docs": [
+        "1. Initialize a new prediction market"
+      ],
+      "discriminator": [
+        103,
+        226,
+        97,
+        235,
+        200,
+        188,
+        251,
+        254
+      ],
+      "accounts": [
+        {
+          "name": "market",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  109,
+                  97,
+                  114,
+                  107,
+                  101,
+                  116
+                ]
+              },
+              {
+                "kind": "arg",
+                "path": "match_id"
+              }
+            ]
+          }
+        },
+        {
+          "name": "usdc_mint"
+        },
+        {
+          "name": "vault",
+          "writable": true
+        },
+        {
+          "name": "authority",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "system_program",
+          "address": "11111111111111111111111111111111"
+        }
+      ],
+      "args": [
+        {
+          "name": "match_id",
+          "type": "string"
+        },
+        {
+          "name": "home_team",
+          "type": "string"
+        },
+        {
+          "name": "away_team",
+          "type": "string"
+        },
+        {
+          "name": "market_type",
+          "type": {
+            "defined": {
+              "name": "MarketType"
+            }
+          }
+        },
+        {
+          "name": "kickoff_time",
+          "type": "i64"
+        },
+        {
+          "name": "close_time",
+          "type": "i64"
+        }
+      ]
+    },
+    {
+      "name": "resolve_market_with_txline",
+      "docs": [
+        "4. Autonomous resolution triggered by anyone reading the TxLINE Devnet Feed"
+      ],
+      "discriminator": [
+        20,
+        239,
+        104,
+        63,
+        253,
+        40,
+        115,
+        90
+      ],
+      "accounts": [
+        {
+          "name": "market",
+          "writable": true
+        },
+        {
+          "name": "txline_match_feed"
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "seed_liquidity",
+      "docs": [
+        "2. Seed initial liquidity to set the starting odds at 50/50"
+      ],
+      "discriminator": [
+        180,
+        57,
+        94,
+        35,
+        73,
+        48,
+        13,
+        11
+      ],
+      "accounts": [
+        {
+          "name": "market",
+          "writable": true
+        },
+        {
+          "name": "vault",
+          "writable": true
+        },
+        {
+          "name": "seeder_usdc",
+          "writable": true
+        },
+        {
+          "name": "seeder",
+          "signer": true
+        },
+        {
+          "name": "token_program"
+        }
+      ],
+      "args": [
+        {
+          "name": "yes_amount",
+          "type": "u64"
+        },
+        {
+          "name": "no_amount",
+          "type": "u64"
+        }
+      ]
+    }
+  ],
+  "accounts": [
+    {
+      "name": "Market",
+      "discriminator": [
+        219,
+        190,
+        213,
+        55,
+        0,
+        227,
+        198,
+        154
+      ]
+    },
+    {
+      "name": "Position",
+      "discriminator": [
+        170,
+        188,
+        143,
+        228,
+        122,
+        64,
+        247,
+        208
+      ]
+    }
+  ],
+  "errors": [
+    {
+      "code": 6000,
+      "name": "MarketNotOpen",
+      "msg": "Market is not currently open"
+    },
+    {
+      "code": 6001,
+      "name": "MathOverflow",
+      "msg": "Math Overflow"
+    },
+    {
+      "code": 6002,
+      "name": "InvalidOracleOwner",
+      "msg": "Account data does not match trusted TxLINE oracle footprint"
+    },
+    {
+      "code": 6003,
+      "name": "InvalidOracleData",
+      "msg": "Data feed layout is invalid or corrupted"
+    },
+    {
+      "code": 6004,
+      "name": "MatchNotFinished",
+      "msg": "Match outcome hasn't reached full time yet according to data feed"
+    },
+    {
+      "code": 6005,
+      "name": "MarketNotResolved",
+      "msg": "Target market state has not resolved yet"
+    },
+    {
+      "code": 6006,
+      "name": "AlreadyClaimed",
+      "msg": "Earnings already pulled from pool"
+    },
+    {
+      "code": 6007,
+      "name": "InvalidCloseTime",
+      "msg": "Betting closing time must occur in the future"
+    },
+    {
+      "code": 6008,
+      "name": "InvalidTimes",
+      "msg": "Kickoff time must be valid"
+    },
+    {
+      "code": 6009,
+      "name": "BettingWindowClosed",
+      "msg": "Trading window has closed for this match. No more bets accepted."
+    }
+  ],
+  "types": [
+    {
+      "name": "Market",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "match_id",
+            "type": "string"
+          },
+          {
+            "name": "home_team",
+            "type": "string"
+          },
+          {
+            "name": "away_team",
+            "type": "string"
+          },
+          {
+            "name": "market_type",
+            "type": {
+              "defined": {
+                "name": "MarketType"
+              }
+            }
+          },
+          {
+            "name": "kickoff_time",
+            "type": "i64"
+          },
+          {
+            "name": "close_time",
+            "type": "i64"
+          },
+          {
+            "name": "status",
+            "type": {
+              "defined": {
+                "name": "MarketStatus"
+              }
+            }
+          },
+          {
+            "name": "outcome",
+            "type": {
+              "defined": {
+                "name": "Outcome"
+              }
+            }
+          },
+          {
+            "name": "usdc_mint",
+            "type": "pubkey"
+          },
+          {
+            "name": "vault",
+            "type": "pubkey"
+          },
+          {
+            "name": "yes_liquidity",
+            "type": "u64"
+          },
+          {
+            "name": "no_liquidity",
+            "type": "u64"
+          },
+          {
+            "name": "yes_shares_issued",
+            "type": "u64"
+          },
+          {
+            "name": "no_shares_issued",
+            "type": "u64"
+          },
+          {
+            "name": "bump",
+            "type": "u8"
+          }
+        ]
+      }
+    },
+    {
+      "name": "MarketStatus",
+      "type": {
+        "kind": "enum",
+        "variants": [
+          {
+            "name": "Open"
+          },
+          {
+            "name": "Resolved"
+          }
+        ]
+      }
+    },
+    {
+      "name": "MarketType",
+      "type": {
+        "kind": "enum",
+        "variants": [
+          {
+            "name": "MatchWinner"
+          },
+          {
+            "name": "OverUnder2_5"
+          }
+        ]
+      }
+    },
+    {
+      "name": "Outcome",
+      "type": {
+        "kind": "enum",
+        "variants": [
+          {
+            "name": "Undecided"
+          },
+          {
+            "name": "YesWin"
+          },
+          {
+            "name": "NoWin"
+          },
+          {
+            "name": "Draw"
+          }
+        ]
+      }
+    },
+    {
+      "name": "Position",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "user",
+            "type": "pubkey"
+          },
+          {
+            "name": "market",
+            "type": "pubkey"
+          },
+          {
+            "name": "yes_shares",
+            "type": "u64"
+          },
+          {
+            "name": "no_shares",
+            "type": "u64"
+          },
+          {
+            "name": "claimed",
+            "type": "bool"
+          },
+          {
+            "name": "bump",
+            "type": "u8"
+          }
+        ]
+      }
+    },
+    {
+      "name": "Side",
+      "type": {
+        "kind": "enum",
+        "variants": [
+          {
+            "name": "Yes"
+          },
+          {
+            "name": "No"
+          }
+        ]
+      }
+    }
+  ]
+}
