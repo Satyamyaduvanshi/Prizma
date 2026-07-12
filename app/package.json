@@ -13,6 +13,7 @@
     "@solana/spl-token": "^0.4.15",
     "@solana/web3.js": "^1.98.4",
     "axios": "^1.18.1",
+    "dotenv": "^17.4.2",
     "next": "16.2.10",
     "react": "19.2.4",
     "react-dom": "19.2.4",
